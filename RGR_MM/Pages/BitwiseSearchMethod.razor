@@ -18,8 +18,8 @@
 
 @code
 {
-    const double LeftBorderSegment = 0.3;
-    const double RightBorderSegment = 2.0;
+    private static double _leftBorderSegment = 0.3;
+    private static double _rightBorderSegment = 2.0;
 
     private double _stopCondition = 0.0;
 
@@ -28,40 +28,131 @@
     private double _minX;
     private double _minF;
 
+    private double _x0;
+    private double _x1;
+    private double _f0;
+    private double _f1;
+
+    private double h = (_rightBorderSegment - _leftBorderSegment) / 4;
+
+    private bool brk = false;
+
     private static double Function(double x)
     {
-        return x * Math.Sqrt(Math.Pow(x, 3) + 1) - Math.Pow(x, 2);
+        //return x * Math.Sqrt(Math.Pow(x, 3) + 1) - Math.Pow(x, 2);
+        return 2* x + 2;
     }
 
     private void ExecuteMethod()
     {
-        _numberIterations = 0;
         _minX = 0;
         _minF = 0;
 
-        var step = (RightBorderSegment - LeftBorderSegment) / 4;
+        double a = _leftBorderSegment, b = _rightBorderSegment;
 
-        _minX = LeftBorderSegment;
-        _minF = Function(_minX);
+        double x, y, sh, x0, x1, f0, f1;
 
-        double sravnX = 0.0;
+        sh = (b - a) / 4;
+        x0 = a;
+        f0 = Function(x0);
 
-        while (Math.Abs(step) > _stopCondition)
+        label:
+
+        x1 = x0 + sh;
+
+        f1 = Function(x1);
+
+        if (f0 >= f1)
         {
-            _numberIterations++;
-            sravnX = _minX + step;
+            x0 = x1;
+            f0 = f1;
 
-            if (_minF > Function(sravnX))           
-            {
-                _minX = sravnX;              
-                _minF = Function(_minX);
-                if (_minX is > LeftBorderSegment and < RightBorderSegment)
-                    continue;
-            }
-                            
-            step = -(step / 4);
-            _minX = sravnX;
-            _minF = Function(_minX);
+            if (a <= x0 && x0 <= b)
+                goto label;
         }
+
+        if (Math.Abs(sh) <= _stopCondition)
+        {
+            x = x0;
+            y = Function(x0);
+        }
+        else
+        {
+            x0 = x1;
+            f0 = f1;
+            sh = -sh / 4;
+            goto label;
+        }
+
+        _minX = x;
+        _minF = y;
     }
+
+    //double x0 = 0;
+    //double x1 = 0;
+    //double f0 = 0;
+    //double f1 = 0;
+
+    //_leftBorderSegment = 0.3;
+    //_rightBorderSegment = 2.0;
+
+    //_numberIterations = 0;
+    //_minX = 0;
+    //_minF = 0;
+
+    //_numberIterations = 0;
+
+    //var step = (_rightBorderSegment - _leftBorderSegment) / 4;
+
+    //_x0 = _leftBorderSegment;
+    //_f0 = Function(_x0);
+
+    //label1:
+    //_x1 = _x0 + step;
+    //_f1 = Function(_x1);
+
+    //if (_f0 > _f1)
+    //{
+    //    _x0 = _x1;
+    //    _f0 = _f1;
+
+    //    if (_x0 > _leftBorderSegment && _x0 < _rightBorderSegment)
+    //    {
+    //        goto label1;
+    //    }
+    //    else
+    //    {
+
+    //        if (Math.Abs(step) < _stopCondition)
+    //        {
+    //            _minX = _x0;
+    //            _minF = Function(_minX);
+    //        }
+    //        else
+    //        {
+    //            step = -step / 4;
+    //            _x0 = _x1;
+    //            _f0 = _f1;
+    //            _numberIterations++;
+    //            goto label1;
+    //        }
+    //    }
+    //}
+    //else
+    //{
+    //    if (Math.Abs(step) < _stopCondition)
+    //    {
+    //        _minX = _x0;
+    //        _minF = Function(_minX);
+    //    }
+    //    else
+    //    {
+    //        step = -step / 4;
+    //        _x0 = _x1;
+    //        _f0 = _f1;
+    //        _numberIterations++;
+    //        goto label1;
+    //    }
+    //}
+    
 }
