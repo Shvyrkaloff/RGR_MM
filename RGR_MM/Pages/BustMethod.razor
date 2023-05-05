@@ -1,0 +1,75 @@
+﻿@page "/BustMethod"
+
+<h1>МЕТОД РАВНОМЕРНОГО ПОИСКА</h1>
+
+<label>ε =</label>
+<input type="text" @bind-value="_stopCondition" />
+<button @onclick="ExecuteMethod">Execute method</button>
+
+<div>
+    <label>Точка минимума (x*): @_minX</label>
+</div>
+<div>
+    <label>Минимум (f*): @_minF</label>
+</div>
+<div>
+    <label>Число итераций: @_numberIterations</label>
+</div>
+
+@code
+{
+    const double LeftBorderSegment = 0.3;
+    const double RightBorderSegment = 2.0;
+
+    private double _stopCondition = 0.0;
+
+    private int _numberIterations = 0;
+
+    private double _minX;
+    private double _minF;
+
+    private static double Function(double x)
+    {
+        return x * Math.Sqrt(Math.Pow(x, 3) + 1) - Math.Pow(x, 2);
+    }
+
+    private void ExecuteMethod()
+    {
+        _numberIterations = 0;
+        _minX = 0;
+        _minF = 0;
+
+        double sravnX;
+
+        double x1;
+        double x2;
+
+        var epsN = (RightBorderSegment - LeftBorderSegment) / 2;
+
+        _minX = LeftBorderSegment;
+        _minF = Function(_minX);
+
+        try
+        {
+            var numberPartitions = Convert.ToInt32((RightBorderSegment - LeftBorderSegment) / _stopCondition);
+
+            for (var i = 0; i < numberPartitions; i++)
+            {
+                _numberIterations++;
+
+                sravnX = LeftBorderSegment + i * (RightBorderSegment - LeftBorderSegment) / numberPartitions;
+
+                if (Function(sravnX) <= _minF)
+                {
+                    _minX = sravnX;
+                    _minF = Function(_minX);
+                }
+            }
+        }
+        catch
+        {
+            _minX = 0;
+            _minF = 0;
+        }
+    }
+}

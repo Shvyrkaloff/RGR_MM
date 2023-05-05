@@ -1,0 +1,77 @@
+﻿@page "/GoldenSectionMethod"
+
+<h3>МЕТОД ЗОЛОТОГО СЕЧЕНИЯ</h3>
+
+<label>ε =</label>
+<input type="text" @bind-value="_stopCondition" />
+<button @onclick="ExecuteMethod">Execute method</button>
+
+<div>
+    <label>Точка минимума (x*): @_minX</label>
+</div>
+<div>
+    <label>Минимум (f*): @_minF</label>
+</div>
+<div>
+    <label>Число итераций: @_numberIterations</label>
+</div>
+
+@code {
+    private static readonly double Tau = (Math.Sqrt(5) - 1) / 2;
+
+    private double _leftBorderSegment = 0.3;
+    private double _rightBorderSegment = 2.0;
+
+    private double _stopCondition = 0.0;
+
+    private int _numberIterations = 0;
+
+    private double _minX;
+    private double _minF;
+
+    private double x1;
+    private double x2;
+
+    private static double Function(double x)
+    {
+        return x * Math.Sqrt(Math.Pow(x, 3) + 1) - Math.Pow(x, 2);
+    }
+
+    private void ExecuteMethod()
+    {
+        _leftBorderSegment = 0.3;
+        _rightBorderSegment = 2.0;
+
+        _numberIterations = 0;
+        _minX = 0;
+        _minF = 0;
+
+        x1 = _leftBorderSegment + (((3 - Math.Sqrt(5)) / 2) * (_rightBorderSegment - _leftBorderSegment));
+        x2 = _leftBorderSegment + (((Math.Sqrt(5) - 1) / 2) * (_rightBorderSegment - _leftBorderSegment));
+
+        var delta = _stopCondition;
+        var epsN = (_rightBorderSegment - _leftBorderSegment) / 2;
+
+        while (epsN > _stopCondition)
+        {
+            _numberIterations++;
+
+            if (Function(x1) < Function(x2))
+            {
+                _rightBorderSegment = x2;
+                x2 = x1;
+                x1 = _rightBorderSegment + _leftBorderSegment - x2;
+            }
+            else
+            {
+                _leftBorderSegment = x1;
+                x1 = x2;
+                x2 = _rightBorderSegment + _leftBorderSegment - x1;
+            }
+            epsN = Tau * epsN;
+        }
+
+        _minX = (_leftBorderSegment + _rightBorderSegment) / 2;
+        _minF = Function(_minX);
+    }
+}

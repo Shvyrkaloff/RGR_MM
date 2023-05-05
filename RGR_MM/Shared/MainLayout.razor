@@ -1,0 +1,56 @@
+﻿@inherits LayoutComponentBase
+
+<div class="header-brand" style="padding-bottom: 20px;padding-top: 20px;">
+    <div class="header-brand-inner clearfix">
+        <div class="header-line"></div>
+        <div class="header-logo float-md-start @(DateTime.Now > new DateTime(DateTime.Now.Year, 12, 23) || DateTime.Now < new DateTime(DateTime.Now.Year, 1, 10) ? "header-logo-new-year" : "")">
+            <NavLink href="" class="noborder" Match="NavLinkMatch.All">
+                <div class="header-logo_svg">
+                    <svg version="1.1" id="header-logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="168" height="46.185" viewBox="0 0 167.8 46.1" style="enable-background: new 0 0 167.8 46.1;vertical-align: baseline;" xml:space="preserve"><g><path class="tatneft-logo-red" d="M18.9,9.6c3,7.5-1.9,12.4-6.7,17.2c-4.5,4.9-8.4,10.1-0.5,19.3c-3-7.5,1.9-12.4,6.7-17.2 C22.9,24,26.8,18.9,18.9,9.6"></path><path class="tatneft-logo-green" d="M11.7,0c3,7.5-1.9,12.4-6.7,17.2c-4.5,4.9-8.4,10.1-0.5,19.3c-3-7.5,1.9-12.4,6.7-17.2 C15.7,14.4,19.7,9.2,11.7,0"></path><polygon class="tatneft-logo-green" points="133.6,29.8 133.6,45.2 140.3,45.2 140.3,39.5 147.7,39.5 147.7,36.2 140.3,36.2 140.3,33.2 155,33.2 155,45.2 161.7,45.2 161.7,33.2 167.8,33.2 167.8,29.8"></polygon><polygon class="tatneft-logo-green" points="119.1,41.8 119.1,39.2 127.9,39.2 127.9,35.8 119.1,35.8 119.1,33.2 130.4,33.2 130.4,29.8 112.4,29.8 112.4,45.2 130.5,45.2 130.5,41.8"></polygon><polygon class="tatneft-logo-red" points="48.1,29.8 29.4,29.8 29.4,33.2 35.4,33.2 35.4,45.2 42.1,45.2 42.1,33.2 48.1,33.2"></polygon><path class="tatneft-logo-red" d="M61.4,29.8h-7.2l-8.4,15.4h4.4l1.4-2.6H61l1.4,2.6h7.5L61.4,29.8z M53.2,39.4l3.1-6l3,6H53.2z"></path><polygon class="tatneft-logo-green" points="104.1,29.8 104.1,37.5 93.4,29.8 88.1,29.8 88.1,45.2 92.7,45.2 92.7,36.7 103.8,45.2 108.7,45.2 108.7,29.8"></polygon><polygon class="tatneft-logo-red" points="85.8,29.8 67.6,29.8 67.6,33.2 73.5,33.2 73.5,45.2 80.3,45.2 80.3,33.2 85.8,33.2"></polygon></g></svg>
+                </div>
+            </NavLink>
+        </div>
+        <div class="header-user float-md-end">
+            <div class="user-popup">
+                <div class="user-popup__control">
+                    <div class="user-popup__name">
+                        <span class="pseudo_link">@ShortName</span>&nbsp;<span class="user-popup__icon fa fa-angle-down"></span>
+                    </div>
+                    <a href="@($"logout")" class="user-popup__logout noborder">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="21.20" height="20" viewBox="0 0 21.2 20" style="enable-background: new 0 0 21.2 20;" xml:space="preserve">
+                        <g>
+                        <polyline class="st000" points="14.7,14.5 14.7,19.5 0.5,19.5 0.5,0.5 14.7,0.5 14.7,4.8 	"></polyline>
+                        <line class="st000" x1="8.6" y1="9.6" x2="20.5" y2="9.6"></line>
+                        <polyline class="st000" points="17.1,6.5 20.5,9.6 17.2,12.7 	"></polyline>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page">
+    <div class="sidebar" style="background: linear-gradient(90deg, rgba(58,160,110,1) 0%, rgba(2,75,92,1) 100%)!important;">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code
+{
+
+    private const string DefaultUserName = "Anonymous User";
+
+    private string ShortName = DefaultUserName;
+}
